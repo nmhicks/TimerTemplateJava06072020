@@ -7,11 +7,19 @@ import java.util.Scanner;
 public class Main {
     Timer timer;
     Scanner input;
+    private int counter;
     
-    public Main(int seconds) {
+    public Main(int seconds) throws InterruptedException {
+        counter = 0;
         timer = new Timer();
         timer.schedule(new RemindTask(), seconds*1000);
-	}
+        Thread.sleep(seconds*1000);
+        System.out.printf("\nStart " + BreakCalc(seconds) + "min Break\n");
+        Thread.sleep(BreakCalc(seconds)*1000);
+        System.out.println("Break Over");
+        
+        }    
+
     
     class RemindTask extends TimerTask {
         public void run() {
@@ -19,16 +27,24 @@ public class Main {
             timer.cancel(); //Terminate the timer thread
         }
     }
+    
+    //calculate duration of break
+    public int BreakCalc(int seconds){
+        int num = 0;
+        if(seconds > 0 && seconds <= 25){
+            num = 5;
+        }
+        else{
+            num = 5 + ((seconds - 25) / 10 * 5);
+        }
+        return num;
+    }
 
-    public static void main(String args[]) { 
-        /* //User Input Block
+    public static void main(String args[]) throws InterruptedException { 
+         //User Input Block
         Scanner sc = new Scanner(System.in); 
         System.out.print("Input Work Duration: ");
         int num = sc.nextInt();
         new Main(num);
-        */
-        //Auto Input Block
-        new Main(5);
-        System.out.println("Task scheduled.");
     }
-}
+} 	
